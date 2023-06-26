@@ -1,0 +1,12 @@
+{
+	"name": "com.cptnfabulous.statemachines",
+	"version": "0.1.0",
+	"displayName": "CptnFabulous' State Machines",
+	"description": "My state machine code for use in my FPS and in other places, also for learning and expanding my portfolio.",
+	"unity": "2021.3",
+	"author": {
+		"name": "Marcus Mouyat",
+		"email": "marcus@mouyat.com",
+		"url": "",
+	}
+}

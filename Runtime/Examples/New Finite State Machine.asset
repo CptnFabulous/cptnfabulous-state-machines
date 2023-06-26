@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d8af30b8ee7474fbd859f0507a9099, type: 3}
+  m_Name: New Finite State Machine
+  m_EditorClassIdentifier: 
+  editorPosition: {x: 0, y: 0}
+  states:
+  - {fileID: 11400000, guid: 02f4f8bcfcb6ae646bc90ac19cfb9daa, type: 2}
+  - {fileID: 11400000, guid: ac2d073dc3f4d8245a5b31de6a85f9c8, type: 2}
+  - {fileID: 11400000, guid: 9600ddc8c7d2fb54b9dcfee7897e9ac8, type: 2}
+  - {fileID: 11400000, guid: ff911cccb66a39c44925f936d3fb928d, type: 2}
+  transitions:
+  - active: 1
+    from: {fileID: 11400000, guid: 02f4f8bcfcb6ae646bc90ac19cfb9daa, type: 2}
+    to: {fileID: 11400000, guid: ac2d073dc3f4d8245a5b31de6a85f9c8, type: 2}
+    conditionData: 
+  - active: 1
+    from: {fileID: 11400000, guid: ac2d073dc3f4d8245a5b31de6a85f9c8, type: 2}
+    to: {fileID: 11400000, guid: 9600ddc8c7d2fb54b9dcfee7897e9ac8, type: 2}
+    conditionData: 
+  - active: 1
+    from: {fileID: 11400000, guid: 9600ddc8c7d2fb54b9dcfee7897e9ac8, type: 2}
+    to: {fileID: 11400000, guid: ff911cccb66a39c44925f936d3fb928d, type: 2}
+    conditionData: 
+  - active: 1
+    from: {fileID: 11400000, guid: ff911cccb66a39c44925f936d3fb928d, type: 2}
+    to: {fileID: 11400000, guid: 02f4f8bcfcb6ae646bc90ac19cfb9daa, type: 2}
+    conditionData: 
+  entryNodePosition: {x: 139, y: 88}
+  exitStatePosition: {x: 500, y: 100}
+  fromAnyStatePosition: {x: 100, y: 200}
