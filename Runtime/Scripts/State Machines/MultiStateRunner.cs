@@ -21,9 +21,8 @@ namespace CptnFabulous.StateMachines
                 states[i].OnSetup();
             }
         }
-
-        public override void OnEnter() => currentState?.OnEnter();
-        public override void OnExit() => currentState?.OnExit();
+        protected override void OnEnter() => currentState?.SetActive(true);
+        protected override void OnExit() => currentState?.SetActive(false);
         public override void OnUpdate() => currentState?.OnUpdate();
         public override void OnLateUpdate() => currentState?.OnLateUpdate();
         public override void OnFixedUpdate() => currentState?.OnFixedUpdate();

@@ -22,8 +22,8 @@ namespace CptnFabulous.StateMachines
             rootState = State.CloneFromAsset(rootState, null, this);
             rootState.OnSetup();
         }
-        private void OnEnable() => rootState.OnEnter();
-        private void OnDisable() => rootState.OnExit();
+        private void OnEnable() => rootState.SetActive(true);
+        private void OnDisable() => rootState.SetActive(false);
         private void Update() => rootState.OnUpdate();
         private void LateUpdate() => rootState.OnLateUpdate();
         private void FixedUpdate() => rootState.OnFixedUpdate();
@@ -48,11 +48,21 @@ namespace CptnFabulous.StateMachines
         
         [SerializeField, HideInInspector] internal Vector2 editorPosition;
 
+        bool e = false;
+
+        public bool enabled => e;
+        public void SetActive(bool value)
+        {
+            e = value;
+            if (e) OnEnter();
+            else OnExit();
+        }
+
         public virtual Status GetStatus() => Status.Active;
 
         public virtual void OnSetup() { }
-        public virtual void OnEnter() { }
-        public virtual void OnExit() { }
+        protected virtual void OnEnter() { }
+        protected virtual void OnExit() { }
         public virtual void OnUpdate() { }
         public virtual void OnLateUpdate() { }
         public virtual void OnFixedUpdate() { }

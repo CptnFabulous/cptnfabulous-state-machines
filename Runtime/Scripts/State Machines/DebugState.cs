@@ -16,13 +16,13 @@ namespace CptnFabulous.StateMachines
         {
             Debug.Log("Setting up " + this);
         }
-        public override void OnEnter()
+        protected override void OnEnter()
         {
             Debug.Log("Entering " + this);
             timeEntered = Time.time;
             controller.SetConditionValue(timeValueName, secondsElapsed);
         }
-        public override void OnExit()
+        protected override void OnExit()
         {
             Debug.Log("Exiting " + this);
         }

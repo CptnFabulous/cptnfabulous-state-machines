@@ -12,8 +12,8 @@ namespace CptnFabulous.StateMachines
     public class SimultaneousStateExecutor : MultiStateRunner
     {
         public override State currentState => null;
-        public override void OnEnter() => states.ForEach((s) => s.OnEnter());
-        public override void OnExit() => states.ForEach((s) => s.OnExit());
+        protected override void OnEnter() => states.ForEach((s) => s.SetActive(true));
+        protected override void OnExit() => states.ForEach((s) => s.SetActive(false));
         public override void OnUpdate() => states.ForEach((s) => s.OnUpdate());
         public override void OnLateUpdate() => states.ForEach((s) => s.OnLateUpdate());
         public override void OnFixedUpdate() => states.ForEach((s) => s.OnFixedUpdate());

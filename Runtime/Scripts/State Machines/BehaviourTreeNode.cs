@@ -39,9 +39,9 @@ namespace CptnFabulous.StateMachines
             return cachedStatus;
         }
 
-        public override void OnEnter()
         {
             stateRunningIndex = stateToRunIndex; // Reset the index to represent the state that's supposed to run
+        protected override void OnEnter()
             base.OnEnter();
         }
         protected override State DetermineCurrentState()
