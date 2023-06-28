@@ -15,6 +15,7 @@ namespace CptnFabulous.StateMachines
 
         public override void OnSetup()
         {
+            states.RemoveAll((s) => s == null);
             for (int i = 0; i < states.Count; i++)
             {
                 states[i] = CloneFromAsset(states[i], this);
