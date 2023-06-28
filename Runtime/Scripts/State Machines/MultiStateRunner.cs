@@ -42,10 +42,13 @@ namespace CptnFabulous.StateMachines
             if (newState != currentState)
             {
                 currentState?.SetActive(false);
+                Debug.Log($"{ObjectName(this)}: switching from {ObjectName(currentState)} to {ObjectName(newState)}");
                 cachedCurrentState = newState;
                 currentState?.SetActive(true);
             }
             base.OnUpdate();
         }
+
+        public static string ObjectName(Object obj) => obj != null ? obj.name : "null";
     }
 }

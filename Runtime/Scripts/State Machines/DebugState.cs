@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace CptnFabulous.StateMachines
 {
+    [CreateAssetMenu(fileName = "New DebugState", menuName = "State Controller/Debug/DebugState", order = 0)]
     public class DebugState : State
     {
-        //[SerializeField] float secondsToWait = 5;
         [SerializeField] string timeValueName = "Time in state";
         float timeEntered;
 
@@ -24,11 +24,13 @@ namespace CptnFabulous.StateMachines
         }
         protected override void OnExit()
         {
+            controller.debugText = null;
             Debug.Log("Exiting " + this);
         }
         public override void OnUpdate()
         {
             Debug.Log("Updating " + this + ", time elapsed = " + secondsElapsed);
+            controller.debugText = name;
             controller.SetConditionValue(timeValueName, secondsElapsed);
         }
     }

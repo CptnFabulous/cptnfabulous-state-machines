@@ -15,6 +15,9 @@ namespace CptnFabulous.StateMachines
         */
         public Dictionary<string, object> conditionValues = new Dictionary<string, object>();
 
+        public bool displayDebugMessage = true;
+        [HideInInspector] public string debugText;
+
         #region MonoBehaviour functions
         private void Awake()
         {
@@ -27,6 +30,13 @@ namespace CptnFabulous.StateMachines
         private void Update() => rootState.OnUpdate();
         private void LateUpdate() => rootState.OnLateUpdate();
         private void FixedUpdate() => rootState.OnFixedUpdate();
+        private void OnGUI()
+        {
+            if (displayDebugMessage && string.IsNullOrEmpty(debugText) == false)
+            {
+                GUI.Label(new Rect(0, 0, 500, 100), debugText);
+            }    
+        }
         #endregion
 
         public void SetConditionValue(string name, object value) => conditionValues[name] = value; // Add a value to the dictionary and update it.

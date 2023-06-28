@@ -10,8 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3703c9b143a88c349972723b4c428d2e, type: 3}
-  m_Name: Test Node #1
+  m_Name: Main Sequence
   m_EditorClassIdentifier: 
   editorPosition: {x: 0, y: 0}
-  states: []
+  states:
+  - {fileID: 11400000, guid: bc5b4dc53a8d60240a613f67a3723e24, type: 2}
+  - {fileID: 11400000, guid: facd36c9131a2b24f84e1041502794ec, type: 2}
+  - {fileID: 11400000, guid: 195768479f63bc34b832c520a4f11b47, type: 2}
+  - {fileID: 11400000, guid: 186c7b0f86611ee46879d720e3c30568, type: 2}
   type: 0
