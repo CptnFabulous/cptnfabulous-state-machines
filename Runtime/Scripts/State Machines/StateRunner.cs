@@ -78,6 +78,8 @@ namespace CptnFabulous.StateMachines
         /// <returns></returns>
         internal static State CloneFromAsset(State original, State parent, StateRunner rootController = null)
         {
+            if (original == null) return null;
+
             State newState = Instantiate(original); // Creates a clone of the state
             newState.name = original.name;
             newState.sharedAsset = original; // Assigns a reference to the original asset
