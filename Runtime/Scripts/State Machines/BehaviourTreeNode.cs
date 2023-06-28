@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CptnFabulous.StateMachines
 {
-    [CreateAssetMenu(fileName = "New Behaviour Tree Node", menuName = "State Controller/Behaviour Tree/Behaviour Tree Node", order = 1)]
+    [CreateAssetMenu(fileName = "New Behaviour Tree Node", menuName = "State Controller/Behaviour Tree/Node", order = 1)]
     public class BehaviourTreeNode : StateMachine
     {
         public enum Type
@@ -26,71 +26,75 @@ namespace CptnFabulous.StateMachines
         // Blocked if all the options are blocked (i.e. current state is null)
 
         public Type type;
-
-        // (The two above are different so that it can check to run the enter and exit functions)
-        int stateRunningIndex = 0; // The sub-state that's currently running
-        int stateToRunIndex = 0; // The sub-state that should be running
-        Status cachedStatus; // Whether or not this state should be running
-
-        public override State currentState => GetFromListIndex(states, stateRunningIndex);
+        
         public override Status GetStatus()
         {
-            CheckCompletion(out stateToRunIndex, out cachedStatus);
-            return cachedStatus;
-        }
-
-        {
-            stateRunningIndex = stateToRunIndex; // Reset the index to represent the state that's supposed to run
-        protected override void OnEnter()
-            base.OnEnter();
+            CheckCompletion(out _, out Status status);
+            return status;
         }
         protected override State DetermineCurrentState()
         {
-            CheckCompletion(out stateToRunIndex, out cachedStatus);
-            return GetFromListIndex(states, stateToRunIndex);
+            CheckCompletion(out State stateToRun, out _);
+            return stateToRun;
         }
         /// <summary>
         /// Determines the state's status based on its type and sub-states, and which sub-state should be currently running.
         /// </summary>
         /// <param name="newCurrentStateIndex"></param>
         /// <param name="newStatus"></param>
-        void CheckCompletion(out int newCurrentStateIndex, out Status newStatus)
+        void CheckCompletion(out State stateToRun, out Status overallStatus)
         {
-            // Cycle through to determine the current state and if it can proceed
-            for (int i = stateRunningIndex; i < states.Count; i++)
+            stateToRun = null;
+            
+            // If the current state is no longer active (either completed or blocked)
+            // If blocked and it's a sequence, mark as blocked.
+            // If blocked but it's a priority, move to the next.
+            // If completed and it's a sequence, move to the next.
+            // If completed and it's a priority, mark as completed.
+
+            // If a current state is present, check if it is still running or needs to change.
+            if (currentState != null)
             {
-                newCurrentStateIndex = i;
-                newStatus = states[i].GetStatus();
-
-                // If current state is active, return that because that's the one that needs to be performed
-                if (newStatus == Status.Active) return;
-
-                switch (type, newStatus)
+                overallStatus = currentState.GetStatus();
+                if (overallStatus == Status.Active)
                 {
-                    case (Type.Sequence, Status.Completed): continue; // Move onto the next state in the sequence
+                    stateToRun = currentState;
+                    return;
+                }
+
+                switch (type, overallStatus)
+                {
                     case (Type.Sequence, Status.Blocked): return; // Current is blocked, cannot proceed to next state
                     case (Type.Priority, Status.Completed): return; // Current is completed, no need to proceed to next state
-                    case (Type.Priority, Status.Blocked): continue; // Check if the next state can be performed
                 }
             }
 
-            // Current state is null since there's no valid state to run.
-            newCurrentStateIndex = states.Count;
-            // If sequence type, no more states means everything's completed.
-            // If priority type, no more states means nothing can run.
-            newStatus = (type == Type.Sequence) ? Status.Completed : Status.Blocked;
+            // Switch to the next state if the current one is null or can no longer run, marking needing to move to the next state.
+
+            // Increment the index to the next stage
+            int index = (currentState != null) ? states.IndexOf(currentState) : -1;
+            index++;
+
+            // If the index is still within the array range, check this next state to see if it's valid
+            if (index < states.Count)
+            {
+                stateToRun = states[index];
+                overallStatus = stateToRun.GetStatus();
+            }
+            else
+            {
+                // Current state is null since there's no valid state to run.
+                stateToRun = null;
+                // If sequence type, no more states means everything's completed.
+                // If priority type, no more states means nothing can run.
+                overallStatus = (type == Type.Sequence) ? Status.Completed : Status.Blocked;
+            }
         }
 
-        /// <summary>
-        /// Returns the correct entry, otherwise returns null if outside the range.
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        static T GetFromListIndex<T>(List<T> list, int index)
+        protected override void OnEnter()
         {
-            bool withinArray = index == Mathf.Clamp(index, 0, list.Count - 1);
-            return withinArray ? list[index] : default;
+            cachedCurrentState = null; // Resets the state
+            base.OnEnter();
         }
     }
 }
