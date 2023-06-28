@@ -30,12 +30,12 @@ namespace CptnFabulous.StateMachines
 
     public abstract class StateMachine : MultiStateRunner
     {
-        public override State currentState => cachedCurrentState;
+        public sealed override State currentState => cachedCurrentState;
         protected State cachedCurrentState;
 
         protected abstract State DetermineCurrentState();
 
-        public override void OnUpdate()
+        public sealed override void OnUpdate()
         {
             State newState = DetermineCurrentState();
             if (newState != currentState)
