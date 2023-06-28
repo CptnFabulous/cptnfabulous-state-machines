@@ -18,7 +18,7 @@ namespace CptnFabulous.StateMachines
             states.RemoveAll((s) => s == null);
             for (int i = 0; i < states.Count; i++)
             {
-                states[i] = CloneFromAsset(states[i], this);
+                states[i] = CloneFromAsset(states[i], this, controller);
                 states[i].OnSetup();
             }
         }

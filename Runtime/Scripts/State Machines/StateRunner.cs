@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace CptnFabulous.StateMachines
@@ -64,7 +62,7 @@ namespace CptnFabulous.StateMachines
         public void SetActive(bool value)
         {
             e = value;
-            if (e) OnEnter();
+            if (value) OnEnter();
             else OnExit();
         }
 
@@ -78,23 +76,22 @@ namespace CptnFabulous.StateMachines
         public virtual void OnFixedUpdate() { }
 
         public virtual void ShowInEditorWindow(ref int windowIndex) => StateMachineEditorFunctions.DrawStateWindow(this, windowIndex, null);
-
-
+        
         /// <summary>
         /// Sets up a state for runtime, so new instances can have their own data.
         /// <para>E.g. two instances of the same enemy with the same AI setup, responding to different situations.</para>
         /// </summary>
         /// <param name="original"></param>
         /// <returns></returns>
-        internal static State CloneFromAsset(State original, State parent, StateRunner rootController = null)
+        internal static T CloneFromAsset<T>(T original, State parent, StateRunner controller) where T : State
         {
             if (original == null) return null;
 
-            State newState = Instantiate(original); // Creates a clone of the state
+            T newState = Instantiate(original); // Creates a clone of the state
             newState.name = original.name;
             newState.sharedAsset = original; // Assigns a reference to the original asset
             newState.parentState = parent; // Assigns its parent in the hierarchy
-            newState.controller = rootController ?? parent.controller; // Assigns the root controller running the hierarchy.
+            newState.controller = controller; // Assigns the root controller running the hierarchy.
             return newState;
         }
     }
