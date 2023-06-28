@@ -40,9 +40,9 @@ namespace CptnFabulous.StateMachines
             State newState = DetermineCurrentState();
             if (newState != currentState)
             {
-                currentState?.OnExit();
+                currentState?.SetActive(false);
                 cachedCurrentState = newState;
-                currentState?.OnEnter();
+                currentState?.SetActive(true);
             }
             base.OnUpdate();
         }
