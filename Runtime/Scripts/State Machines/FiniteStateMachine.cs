@@ -41,22 +41,21 @@ namespace CptnFabulous.StateMachines
         }
         protected override State DetermineCurrentState()
         {
-            // Check if current state needs to change
+            // Check transitions to see if there are any heading from the current state
             foreach (StateTransition t in transitions)
             {
                 State from = t.from;
                 State to = t.to;
 
-                if (from != null && from != currentState) continue; // If a transition is not from this state (or 'any state'), ignore it.
+                // If a transition is not from this state (or 'any state'), ignore it.
+                if (from != null && from != currentState) continue;
 
-                bool stateExists = states.Contains(to);
-                if (stateExists == false) continue; // If the state being transitioned to is not in this FSM, ignore it.
+                // If the state being transitioned to is not in this FSM (and isn't the 'exit'), ignore it.
+                if (to != null && states.Contains(to) == false) continue;
 
                 // If a transition from this state is active and the condition is met, return this one (no need to look at the other transitions)
-                if (t.ConditionMet(controller))
-                {
-                    return to;
-                }
+                if (t.ConditionMet(controller)) return to;
+                // Otherwise check the next transition
             }
 
             return currentState; // No transitions made
