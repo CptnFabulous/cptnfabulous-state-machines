@@ -132,7 +132,7 @@ namespace CptnFabulous.StateMachines
 
             string subMenu = "New State";
 
-            Type[] types = TypeExtensions.FindInheritedTypes(typeof(State), true);
+            List<Type> types = TypeExtensions.FindAllInheritedTypesInProject(typeof(State), true);
             foreach (Type stateType in types)
             {
                 // Create a 'directory' within the generic menu for the particular state type, 
